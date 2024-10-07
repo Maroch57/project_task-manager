@@ -1,13 +1,13 @@
 # Webstack - Portfolio Project
 
 This is capstone project that is collaborated by three members namely:
-Jahath Mwarori
-Edwin Waweru
-Edem Dufe
+1. Jahath Mwarori
+2. Edwin Waweru
+3. Edem Dufe
 
 ## Tasks
 ### 0. The presentation
-mandatory
+
 You will present your project individually or as a team on a zoom call.
 
 Your presentation, inclusive of the demo, should not exceed 16 minutes. You are expected to provide the following:
@@ -22,7 +22,7 @@ Remember, the presentation is a vital part of your project completion, so be sur
 
 
 ### 1. Video Demo of your project
-mandatory
+
 Alongside your project presentation, we require a short video demo, no longer than 3 minutes, that showcases the essential features of your project, illustrating how they all work together. This could take the form of a user walkthrough.
 
 We’ve created a tutorial video to inspire you with our expectations. Think of it as an inspirational tool, not a strict template, designed to help you effectively showcase your brilliant work. Your creativity and individual touch will make your demo even more engaging.
@@ -51,7 +51,7 @@ Happy building,
 
 
 ### 3. Good use of Version Control
-mandatory
+
 You must demonstrate a good understanding of version control through effective use in your portfolio project. This include:
 
 Committing as often as possible
