@@ -1,9 +1,9 @@
 # Webstack - Portfolio Project
 
-This is capstone project that is collaborated by three members namely:
-1. Jahath Mwarori
-2. Edwin Waweru
-3. Edem Dufe
+This is a capstone project that is collaborated by three members namely:
+1. Jahath Mwarori - (MySQL) database setup, schema design, ORM integration, DB optimization  &  DB maintenance
+2. Edwin Waweru - (node.js) server-side logic & controllers design, API Design & integration, API Routing.
+3. Edem Dufe - (HTML, CSS, JS) User Interface Design, UI styling, API calls(ajax/fetch), Form Handling, Dynamic Handling
 
 ## Tasks
 ### 0. The presentation
