@@ -57,3 +57,61 @@ You must demonstrate a good understanding of version control through effective u
 Committing as often as possible
 using descriptive and professional commit messages
 collaboration through the use of branches and pull requests
+
+# project mvc structure
+Taskit/
+│
+├── public/                     # Frontend (static files)
+│   ├── css/
+│   │   └── styles.css          # Global CSS styling for frontend
+│   ├── js/
+│   │   ├── main.js             # Logic for landing page interactions
+│   │   └── todo.js             # JavaScript logic for the todo app UI
+│   ├── index.html              # Landing page (welcome, login, sign-up buttons)
+│   └── todo.html               # Todo App UI (user dashboard)
+│                           # backend (server side logic )
+├── views/                      # EJS templates (server-side views)
+│   ├── loginForm.ejs           # Login form for Google or email
+│   ├── signupForm.ejs          # Signup form for Google or email
+│   ├── error.ejs               # Error view for server-side issues
+│   └── profile.ejs             # User profile page (optional)
+│
+├── src/                        # Backend logic
+│   ├── controllers/            # Controllers handle logic for each route
+│   │   ├── authController.js   # Logic for login, signup, and logout
+│   │   ├── userController.js    # Logic for user profile and management
+│   │   └── taskController.js    # Logic for CRUD operations on tasks
+│   │
+│   ├── routes/                 # Routes for backend APIs
+│   │   ├── authRoutes.js       # Auth routes for login, signup, logout
+│   │   ├── userRoutes.js       # User management routes
+│   │   └── taskRoutes.js       # Routes for managing tasks
+│   │
+│   ├── middleware/             # Middleware functions
+│   │   ├── passportConfig.js   # Passport strategies (Google, Local, MagicLink)
+│   │   └── jwtAuth.js          # JWT authentication middleware
+│   │
+│   ├── models/                 # Prisma ORM and database schema
+│   │   └── prisma.schema       # MySQL schema (Prisma)
+│   │
+│   ├── prisma/                 # Prisma migrations
+│   │   └── migrations/         # Database migrations folder
+│   │
+│   ├── tests/                  # Backend unit tests
+│   │   ├── auth.test.js        # Tests for authentication
+│   │   ├── user.test.js        # Tests for user management
+│   │   └── task.test.js        # Tests for task management
+│   │
+│   ├── utils/                  # Helper functions
+│   │   ├── sendEmail.js        # Sends MagicLink emails
+│   │   └── logger.js           # Logger utility (optional)
+│   │
+│   ├── app.js                  # Express app initialization
+│   └── server.js               # Server entry point
+│
+├── .env                        # Environment variables (JWT secret, DB credentials)
+├── package.json                # Project dependencies
+├── package-lock.json           # Lock file for dependencies
+├── README.md                   # Documentation
+└── api-docs/                   # API documentation (Swagger)
+    └── taskit-api.yaml         # OpenAPI (Swagger) file
