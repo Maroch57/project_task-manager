@@ -3,8 +3,10 @@ const cors = require('cors');
 const passport = require('passport');
 const session = require('express-session');
 const dotenv = require('dotenv');
+const passportConfig = require('./middleware/passportConfig'); // Import passport configuration
 
 dotenv.config();
+
 // import routes
 const authRoutes = require('./routes/authRoutes');
 const taskRoutes = require('./routes/taskRoutes');
