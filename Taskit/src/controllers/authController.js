@@ -1,3 +1,5 @@
+// ./src/controllers/authcontroller.js
+
 const User = require('../models/User'); // Your User model
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
@@ -35,6 +37,16 @@ const login = (req, res, next) => {
     })(req, res, next);
 };
 
+// Logout Logic
+const logout = (req, res) => {
+       req.logout((err) => {
+           if (err) {
+               return res.status(500).json({ message: 'Logout error', err });
+           }
+           res.json({ message: 'Logged out successfully' });
+       });
+   };
+
 // Google Authentication Callback
 const googleAuth = (req, res) => {
     res.json({ message: 'Logged in with Google successfully', user: req.user });
@@ -47,5 +59,6 @@ module.exports = {
     signup,
     login,
     googleLogin,
-    googleAuth
+    googleAuth,
+    logout
 };
