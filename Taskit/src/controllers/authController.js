@@ -20,17 +20,17 @@ const signup = async (req, res) => {
         const newUser = await Prisma.user.create({
             data: { email, password: hashedPassword }
         });
-        // Log in the user (if you want to log in immediately after signup)
-        req.login(newUser, (err) => {
-              if (err) {
-                  return res.status(500).json({ message: 'Login after signup failed' });
-              }
-                  return res.status(201).json({ message: 'User created successfully', user: newUser });
-    } catch (error) {
+       // Log in the user (if you want to log in immediately after signup)
+req.login(newUser, (err) => {
+       if (err) {
+           return res.status(500).json({ message: 'Login after signup failed' });
+       }
+       return res.status(201).json({ message: 'User created successfully', user: newUser });
+   });
+   } catch (error) {
        console.error(error); // Logging the error for debugging
-        res.status(500).json({ message: 'Server error' });
-    }
-};
+       res.status(500).json({ message: 'Server error' });
+   }
 
 // Login Logic for Email
 const login = (req, res, next) => {
