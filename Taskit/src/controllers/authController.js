@@ -1,5 +1,6 @@
 // ./src/controllers/authcontroller.js
 
+const { Prisma } = require('@prisma/client');
 const User = require('../models/User'); // Your User model
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
@@ -9,18 +10,24 @@ const signup = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const existingUser = await User.findUnique({ where: { email } }); // Adjust this if using a different database
+        const existingUser = await User.findUnique({ where: { email } }); // Check if the user already exists
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
-
+         // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({
+        // Create a new user
+        const newUser = await Prisma.user.create({
             data: { email, password: hashedPassword }
         });
-
-        res.status(201).json({ message: 'User created successfully', user: newUser });
+        // Log in the user (if you want to log in immediately after signup)
+        req.login(newUser, (err) => {
+              if (err) {
+                  return res.status(500).json({ message: 'Login after signup failed' });
+              }
+                  return res.status(201).json({ message: 'User created successfully', user: newUser });
     } catch (error) {
+       console.error(error); // Logging the error for debugging
         res.status(500).json({ message: 'Server error' });
     }
 };
@@ -61,4 +68,4 @@ module.exports = {
     googleLogin,
     googleAuth,
     logout
-};
+}}; 
