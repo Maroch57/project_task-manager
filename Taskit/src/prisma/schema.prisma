@@ -14,4 +14,13 @@ model User {
   password String?
   googleId String?  @unique
   createdAt DateTime @default(now())
+  tasks     Task[]   // Relationship with Task
+}
+model Task {
+  id        Int      @id @default(autoincrement())
+  title     String
+  description String?
+  completed Boolean  @default(false)
+  userId    Int      // Foreign key to the User model
+  user      User     @relation(fields: [userId], references: [id]) // Establishes the relationship
 }

@@ -1,8 +1,9 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../models/User'); // Your User model
 const bcrypt = require('bcryptjs');
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
 // Serialize user
 passport.serializeUser((user, done) => {
@@ -11,7 +12,7 @@ passport.serializeUser((user, done) => {
 
 // Deserialize user
 passport.deserializeUser(async (id, done) => {
-    const user = await User.findById(id); // Adjust this if using Prisma
+    const user = await prisma.user.findUnique({ where: { id } });
     done(null, user);
 });
 
@@ -21,41 +22,55 @@ passport.use(new LocalStrategy({
     passwordField: 'password',
 }, async (email, password, done) => {
     try {
-        const user = await User.findOne({ email }); // Adjust this if using Prisma
-        if (!user) {
-            return done(null, false, { message: 'No user found' });
-        }
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return done(null, false, { message: 'Incorrect password' });
-        }
-        return done(null, user);
-    } catch (error) {
-        return done(error);
-    }
+       // Use Prisma client to find the user
+       const user = await prisma.user.findUnique({
+              where: { email }, // Prisma way to query by email
+          });
+  
+          if (!user) {
+              return done(null, false, { message: 'No user found' });
+          }
+  
+          // Compare passwords
+          const isMatch = await bcrypt.compare(password, user.password);
+          if (!isMatch) {
+              return done(null, false, { message: 'Incorrect password' });
+          }
+  
+          // If everything is good, return the user
+          return done(null, user);
+      } catch (error) {
+          return done(error);
+      }
 }));
 
 // Google Strategy for Google OAuth
 passport.use(new GoogleStrategy({
-    clientID: process.env.GOOGLE_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    callbackURL: '/auth/google/callback', // Adjust as necessary
-}, async (accessToken, refreshToken, profile, done) => {
-    try {
-        // Check if user already exists
-        const existingUser = await User.findOne({ googleId: profile.id }); // Adjust this if using Prisma
-        if (existingUser) {
-            return done(null, existingUser);
-        }
-
-        // If not, create a new user
-        const newUser = await User.create({
-            googleId: profile.id,
-            email: profile.emails[0].value, // Get email from Google profile
-            // Add additional fields if necessary
-        });
-        done(null, newUser);
-    } catch (error) {
-        done(error);
-    }
-}));
+       clientID: process.env.GOOGLE_CLIENT_ID,
+       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+       callbackURL: process.env.GOOGLE_CALLBACK_URL, // Adjust as necessary as defined in the .env dir
+   }, async (accessToken, refreshToken, profile, done) => {
+       try {
+           // Check if user already exists
+           const existingUser = await prisma.user.findUnique({ where: { googleId: profile.id } });
+   
+           if (existingUser) {
+               return done(null, existingUser); // If user exists, return them
+           }
+   
+           // If not, create a new user
+           const newUser = await prisma.user.create({
+               data: {
+                   googleId: profile.id, // Store the Google ID
+                   email: profile.emails[0].value, // Get email from Google profile
+                   
+                   // Add additional fields if necessary
+               },
+           });
+           return done(null, newUser); // Return the newly created user
+           
+       } catch (error) {
+           return done(error); // Pass the error to the done callback
+       }
+   }));
+   
