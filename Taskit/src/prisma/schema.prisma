@@ -1,0 +1,17 @@
+// schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL") // MySQL connection URL in .env
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String?
+  googleId String?  @unique
+  createdAt DateTime @default(now())
+}
