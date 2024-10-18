@@ -65,8 +65,25 @@ const login = async (req, res, next) => {
            return res.status(500).json({ message: 'Server error' });
        }
    };
-   
-
+   // Get user logic
+   const getUserDetails = async (userId) => {
+       try {
+           // Fetch the user from the database using the userId
+           const user = await prisma.user.findUnique({
+               where: { id: Number(userId) }, // Ensure userId is a number
+               select: {
+                   id: true,
+                   email: true,
+                   createdAt: true,
+                   // Exclude sensitive information like password
+               },
+           });
+           return user;
+       } catch (error) {
+           console.error('Error fetching user details:', error);
+           throw error; // Propagate error for handling in the route
+       }
+   };
 // Logout Logic
 const logout = (req, res) => {
        req.logout((err) => {
