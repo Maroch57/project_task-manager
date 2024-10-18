@@ -2,10 +2,10 @@
 
 const express = require('express');
 const passport = require('passport');
-//const { signup, login, logout } = require('../controllers/authController');
 const router = express.Router();
-//const { login, signup, googleLogin, logout, googleAuth } = require('../controllers/authController.js');
 const jwt = require('jsonwebtoken'); // Import the jsonwebtoken library
+
+// import controllers
 const {
        signup,
        login,
@@ -13,6 +13,7 @@ const {
        googleLogin,
        googleAuth
      } = require('../controllers/authController.js');
+const { getUserDetails } = require('./src/controllers/auth');
 
 // Email Authentication Routes
 router.post('/signup', signup);
@@ -45,9 +46,28 @@ router.get(
            // res.redirect('/dashboard'); // Uncomment this line if you prefer to redirect
        }
    );
+// Route to fetch user details by ID
+router.get('/user/:id', async (req, res) => {
+       const userId = parseInt(req.params.id, 10); // Convert ID to integer
    
-   // Logout Route
-   router.get('/logout', (req, res) => {
+       try {
+           const user = await prisma.user.findUnique({
+               where: { id: userId },
+               select: { id: true, email: true, createdAt: true } // Exclude sensitive fields
+           });
+   
+           if (!user) {
+               return res.status(404).json({ message: 'User not found.' });
+           }
+   
+           res.status(200).json(user);
+       } catch (error) {
+           console.error('Error fetching user:', error);
+           res.status(500).json({ message: 'Internal server error', error: error.message });
+       }
+   });
+// Logout Route
+router.get('/logout', (req, res) => {
        req.logout((err) => {
            if (err) {
                return res.status(500).json({ message: 'Logout failed', error: err });
