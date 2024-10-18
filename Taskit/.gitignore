@@ -1,3 +1,4 @@
+#ignore all of the bellow dirs/ files
 node_modules/
 public/
 .env

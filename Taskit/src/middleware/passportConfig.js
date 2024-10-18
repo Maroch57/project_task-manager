@@ -2,9 +2,21 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
+const jwtAuth = require('./jwtAuth.js')
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
+/* passport.use(new GoogleStrategy({
+       clientID: process.env.GOOGLE_CLIENT_ID,
+       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+       callbackURL: 'http://localhost:3000/auth/google/callback'
+   },
+   function(accessToken, refreshToken, profile, done) {
+       // Handle user profile here
+       return done(null, profile);
+       
+   }));
+*/
 // Serialize user
 passport.serializeUser((user, done) => {
     done(null, user.id);
@@ -43,7 +55,7 @@ passport.use(new LocalStrategy({
           return done(error);
       }
 }));
-
+/*
 // Google Strategy for Google OAuth
 passport.use(new GoogleStrategy({
        clientID: process.env.GOOGLE_CLIENT_ID,
@@ -72,5 +84,5 @@ passport.use(new GoogleStrategy({
        } catch (error) {
            return done(error); // Pass the error to the done callback
        }
-   }));
-   
+   })); 
+ */
