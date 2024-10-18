@@ -12,4 +12,9 @@ const jwtAuth = (req, res, next) => {
     });
 };
 
-module.exports = jwtAuth;
+// jwtAuth.js
+module.exports = function (req, res, next) {
+       console.log('JWT Auth Middleware');
+       next();
+     };
+     

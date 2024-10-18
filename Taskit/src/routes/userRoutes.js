@@ -73,7 +73,41 @@ router.post('/login', validateSignup, async (req, res) => {
         res.status(500).json({ message: 'Error logging in User.', error: error.message });
     }
 });
-
+router.post('/signin', async (req, res) => {
+       const { email, password } = req.body;
+   
+       try {
+           // Find the user by email
+           const user = await prisma.user.findUnique({
+               where: { email: email }
+           });
+   
+           // Check if user exists
+           if (!user) {
+               return res.status(401).json({ message: "Invalid email or password" });
+           }
+   
+           // Compare the provided password with the stored hashed password
+           const passwordMatch = await bcrypt.compare(password, user.password);
+   
+           if (!passwordMatch) {
+               return res.status(401).json({ message: "Invalid email or password" });
+           }
+   
+           // Respond with success message and user info (excluding password)
+           res.status(200).json({
+               message: "Signin successful",
+               user: {
+                   id: user.id,
+                   email: user.email,
+                   createdAt: user.createdAt
+               }
+           });
+       } catch (error) {
+           console.error("Error during signin:", error);
+           res.status(500).json({ message: "Internal server error" });
+       }
+   });
 // Get User profile route (protected)
 router.get('/profile', async (req, res) => {
     const userId = req.user.id; // Get User ID from request after validation
@@ -88,6 +122,7 @@ router.get('/profile', async (req, res) => {
         }
 
         res.status(200).json({ email: user.email });
+        res.json({ id: user.id, email: user.email, createdAt: user.createdAt });
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving User profile.', error: error.message });
     }

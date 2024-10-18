@@ -1,2 +1,8 @@
+<<<<<<< HEAD
+=======
+#ignore all of the bellow dirs/ files
+node_modules/
+public/
+>>>>>>> 5d8247e (Updated .gitignore and removed sensitive files from tracking also made changes to the userRoutes.js and hid sensitive user data from the get user details feature)
 .env
 >>>>>>> 48ee56b ( created project folders according to mvc)
