@@ -65,7 +65,7 @@ const login = async (req, res, next) => {
            return res.status(500).json({ message: 'Server error' });
        }
    };
-   // Get user logic
+   // Get user  Info logic
    const getUserDetails = async (userId) => {
        try {
            // Fetch the user from the database using the userId

@@ -17,7 +17,7 @@ console.log("GOOGLE_CLIENT_SECRET:", process.env.GOOGLE_CLIENT_SECRET);
 // import routes
 const authRoutes = require('./src/routes/authRoutes');
 const taskRoutes = require('./src/routes/taskRoutes');
-const userRoutes = require('./src/routes/userRoutes'); // Include user routes
+const userRoutes = require('./src/routes/userRoutes');
 
 const app = express();
 
@@ -34,7 +34,7 @@ app.use(passport.session());
 // Routes
 app.use('/auth', userRoutes);
 app.use('/tasks', taskRoutes);
-app.use('/users', userRoutes); 
+app.use ('/', userRoutes); 
 
 // Protected route example
 app.get('/profile', jwtAuth, (req, res) => {
