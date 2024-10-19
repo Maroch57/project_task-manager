@@ -121,8 +121,10 @@ router.get('/profile', async (req, res) => {
             return res.status(404).json({ message: 'User not found.' });
         }
 
-        res.status(200).json({ email: user.email });
-        res.json({ id: user.id, email: user.email, createdAt: user.createdAt });
+        // Respond with filtered user data (excluding sensitive info)
+        const { password, ...filteredUser } = user; // Exclude password or any other sensitive fields
+        res.json(filteredUser);
+        
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving User profile.', error: error.message });
     }
