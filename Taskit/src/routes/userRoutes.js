@@ -158,7 +158,7 @@ router.get('/profile', jwtAuth ,async (req, res) => {
         res.status(500).json({ message: 'Error retrieving User profile.', error: error.message });
     }
 });
-// GOOGLE SIGNUP/LOGIN& LOGOUT Authentication Routes
+/*/ GOOGLE SIGNUP/LOGIN& LOGOUT Authentication Routes
 // User Signup
 router.post('/signup', async (req, res) => {
        const { email, password } = req.body;
@@ -196,6 +196,6 @@ router.post('/signup', async (req, res) => {
        const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
        res.redirect(`/dashboard?token=${token}`);
      });
-
+*/
 // Export the router
 module.exports = router;

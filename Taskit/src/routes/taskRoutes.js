@@ -2,7 +2,7 @@ const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const router = express.Router();
-
+const jwt = require('express-jwt');
 
 // Create a new task
 router.post('/', jwtAuth, async (req, res) => {

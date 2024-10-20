@@ -1,4 +1,4 @@
-// ./src/controllers/authcontroller.js
+// ./src/controllers/auth.js
 
 const { Prisma, PrismaClient } = require('@prisma/client');
 const User = require('../models/User'); // Your User model
@@ -96,7 +96,7 @@ const logout = (req, res) => {
            res.json({ message: 'Logged out successfully' });
        });
    };
-   
+
 // Middleware to check if token is blacklisted
 const authMiddleware = (req, res, next) => {
        const token = req.headers.authorization?.split(' ')[1];
