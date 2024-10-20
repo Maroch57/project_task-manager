@@ -4,8 +4,11 @@ const { Prisma, PrismaClient } = require('@prisma/client');
 const User = require('../models/User'); // Your User model
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
-
+const jwt = require('jsonwebtoken');
 const prisma = new PrismaClient(); //instatiate Prisma Client
+
+// In-memory token blacklist (can be replaced with Redis or DB for production)
+const tokenBlacklist = new Set();
 
 // Signup Logic
 const signup = async (req, res) => {
@@ -93,7 +96,33 @@ const logout = (req, res) => {
            res.json({ message: 'Logged out successfully' });
        });
    };
-
+   
+// Middleware to check if token is blacklisted
+const authMiddleware = (req, res, next) => {
+       const token = req.headers.authorization?.split(' ')[1];
+   
+       if (!token) {
+           return res.status(401).json({ message: 'No token provided.' });
+       }
+   
+       if (tokenBlacklist.has(token)) {
+           return res.status(401).json({ message: 'Token has been invalidated. Please log in again.' });
+       }
+   
+       try {
+           const decoded = jwt.verify(token, process.env.JWT_SECRET); // Replace with your JWT secret
+           req.user = decoded; // Attach user info to the request object
+           next();
+       } catch (error) {
+           return res.status(401).json({ message: 'Invalid token.' });
+       }
+   };
+   
+   // Function to blacklist tokens (for logout functionality)
+   const logoutUser = (token) => {
+       tokenBlacklist.add(token);
+   };
+   
 // Google Authentication Callback
 const googleAuth = (req, res) => {
     res.json({ message: 'Logged in with Google successfully', user: req.user });

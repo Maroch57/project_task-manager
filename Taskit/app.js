@@ -1,3 +1,4 @@
+// app.js
 const express = require('express');
 const cors = require('cors');
 const passport = require('passport');
@@ -36,14 +37,18 @@ app.use('/auth', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use ('/', userRoutes); 
 
-// Protected route exampleclear
-/* app.get('/protected', authMiddleware, (req, res) => {
-       res.json({ message: `Welcome, ${req.user.email}! This is a protected route.` });
-   });
-   */
+// Protected route example clear
 
 app.get('/profile', jwtAuth, (req, res) => {
-       res.json({ message: `Welcome, ${req.user.email}! This is a protected route.` });
+       // find user by Id from user model
+       User.findById(req.userId, (err, user) => {
+              // if error or not the user .
+              if (err || !user) {
+                  return res.status(404).json({ message: 'User not found.' });
+              }
+               // Send the user's email in the response
+              res.status(200).json({ email: user.email });
+          });
    }); 
 
 // port configuration
