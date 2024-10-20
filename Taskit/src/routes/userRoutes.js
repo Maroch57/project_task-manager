@@ -7,6 +7,9 @@ const { PrismaClient } = require('@prisma/client');
 const router = express.Router();
 const prisma = new PrismaClient();
 
+const jwtAuth = require('../middleware/jwtAuth');
+const tokenBlacklist = new Set(); // In-memory jwt token blacklist for demo 
+
 // Middleware to validate request body
 const validateSignup = (req, res, next) => {
     const { email, password } = req.body;
@@ -52,7 +55,7 @@ router.post('/login', validateSignup, async (req, res) => {
 
     try {
         // Find User
-        const user = await prisma.User.findUnique({
+        const user = await prisma.user.findUnique({
             where: { email }
         });
         if (!user) {
@@ -73,6 +76,32 @@ router.post('/login', validateSignup, async (req, res) => {
         res.status(500).json({ message: 'Error logging in User.', error: error.message });
     }
 });
+
+// Protected route (only accessible if authenticated)
+router.get('/protected', jwtAuth, (req, res) => {
+       res.status(200).json({ message: `Hello ${req.user.email}, this is a protected route.` });
+   });
+
+// User logout route
+router.post('/logout', (req, res) => {
+       const token = req.headers.authorization?.split(' ')[1];
+   
+       if (token) {
+           // Optionally, invalidate the token
+           tokenBlacklist.add(token); // Add the token to the blacklist
+   
+           // You can also handle token invalidation in a more robust way,
+           // such as by storing invalidated tokens in a database with an expiration time.
+           
+           return res.status(200).json({ message: 'User logged out successfully.' });
+       } else {
+           return res.status(401).json({ message: 'No token provided.' });
+       }
+
+       logoutUser(token); // Blacklist the token
+    res.status(200).json({ message: 'User logged out successfully.' });
+   });
+   
 router.post('/signin', async (req, res) => {
        const { email, password } = req.body;
    
@@ -109,11 +138,11 @@ router.post('/signin', async (req, res) => {
        }
    });
 // Get User profile route (protected)
-router.get('/profile', async (req, res) => {
+router.get('/profile', jwtAuth ,async (req, res) => {
     const userId = req.user.id; // Get User ID from request after validation
 
     try {
-        const user = await prisma.User.findUnique({
+        const user = await prisma.user.findUnique({
             where: { id: userId },
             select: { email: true } // Exclude password
         });
@@ -124,7 +153,7 @@ router.get('/profile', async (req, res) => {
         // Respond with filtered user data (excluding sensitive info)
         const { password, ...filteredUser } = user; // Exclude password or any other sensitive fields
         res.json(filteredUser);
-        
+
     } catch (error) {
         res.status(500).json({ message: 'Error retrieving User profile.', error: error.message });
     }
