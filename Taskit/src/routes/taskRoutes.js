@@ -2,8 +2,14 @@ const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const router = express.Router();
-const jwt = require('express-jwt');
+const jwt = require('jsonwebtoken');
+const { expressjwt } = require('express-jwt');
 
+const jwtAuth = expressjwt({
+       secret: process.env.JWT_SECRET,  // Shared secret for both signing and verifying
+       algorithms: ['HS256'],  // HMAC-SHA256
+   });
+   
 // Create a new task
 router.post('/', jwtAuth, async (req, res) => {
     // Only taking userId and title
