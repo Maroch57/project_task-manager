@@ -1,7 +1,6 @@
-// src/middleware/jwtAuth.js
 const jwt = require('jsonwebtoken');
 
-const jwtAuth = (req, res, next) => {
+uconst jwtAuth = (req, res, next) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -12,9 +11,4 @@ const jwtAuth = (req, res, next) => {
     });
 };
 
-// jwtAuth.js
-module.exports = function (req, res, next) {
-       console.log('JWT Auth Middleware');
-       next();
-     };
-     
+module.exports = jwtAuth;

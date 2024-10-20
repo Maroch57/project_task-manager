@@ -36,10 +36,15 @@ app.use('/auth', userRoutes);
 app.use('/tasks', taskRoutes);
 app.use ('/', userRoutes); 
 
-// Protected route example
-app.get('/profile', jwtAuth, (req, res) => {
-       res.json({ message: `Welcome, ${req.user.email}` });
+// Protected route exampleclear
+/* app.get('/protected', authMiddleware, (req, res) => {
+       res.json({ message: `Welcome, ${req.user.email}! This is a protected route.` });
    });
+   */
+
+app.get('/profile', jwtAuth, (req, res) => {
+       res.json({ message: `Welcome, ${req.user.email}! This is a protected route.` });
+   }); 
 
 // port configuration
 const PORT = process.env.PORT || 3000;
