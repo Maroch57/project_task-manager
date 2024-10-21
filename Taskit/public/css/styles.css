@@ -11,7 +11,7 @@
 
 /* Landing page styles */
 .welcome-note {
-    color: white;
+    color: #fff;
     text-align: center;
     margin-top: 60px;
 }
@@ -28,19 +28,19 @@
 .buttons button {
     border: 2px solid;
     font-size: 20px;
-    background: white;
-    color: #021800;
+    background: #4CAF50;
+    color: #fff;
 }
 .buttons button:hover {
-    background: #021800;
-    color:#fff;
+    background: #1181e2;
+    color: white;
 }
 /* Landing page styles */
 
 .container {
     width: 100%;
     min-height: 100vh;
-    background: #021800; /* Not in the tutorial */
+    background: #4CAF50; /* Not in the tutorial */
     /* background: linear-gradient(135deg, #0d3009a7, #124320); */
     padding: 10px;
 }
