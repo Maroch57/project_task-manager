@@ -21,6 +21,8 @@ model Task {
   title     String
   description String?
   completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   userId    Int      // Foreign key to the User model
   user      User     @relation(fields: [userId], references: [id]) // Establishes the relationship
 }
