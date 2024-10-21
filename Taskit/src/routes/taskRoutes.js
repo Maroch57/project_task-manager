@@ -14,7 +14,9 @@ const jwtAuth = expressjwt({
 router.post('/', jwtAuth, async (req, res) => {
     // Only taking userId and title
     const { title } = req.body;
-    const userId = req.userId;
+    const userId = req.auth.id; // Accessing the user ID from the JWT
+    console.log('userId:', userId); // Log the userId for debugging
+    console.log('Task title:', title);
     try {
         const task = await prisma.task.create({
             data: { userId, title }, // Save task with userId and title

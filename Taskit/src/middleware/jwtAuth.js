@@ -10,13 +10,12 @@ const jwtAuth = expressJwt({
 
 // Example middleware function to log user info
 const logUserInfo = (req, res, next) => {
-    console.log('Decoded JWT:', req.user); // Log decoded JWT payload
+    console.log('Decoded JWT:', req.auth); // Log decoded JWT payload
     next(); // Call the next middleware
 };
 
-module.exports = { jwtAuth, logUserInfo };
-
-/*// Middleware function to authenticate JWT tokens
+module.exports = { jwtAuth, logUserInfo }
+/* // Middleware function to authenticate JWT tokens
 const jwtAuth = (req, res, next) => {
        const token = req.headers['authorization']?.split(' ')[1]; // Get the token from the header
        if (!token) {
