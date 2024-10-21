@@ -1,0 +1,48 @@
+{
+  "name": "taskit",
+  "version": "1.0.0",
+  "description": "taskit is a todo list app done with html, css, js and node express and mysql",
+  "main": "app.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maroch57/project_task-manager.git"
+  },
+  "keywords": [
+    "todo list",
+    "html",
+    "css",
+    "javascript",
+    "node",
+    "express",
+    "mysql",
+    "authentication",
+    "web-app",
+    "project-management",
+    "MVC",
+    "REST API"
+  ],
+  "author": "javascript",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Maroch57/project_task-manager/issues"
+  },
+  "homepage": "https://github.com/Maroch57/project_task-manager#readme",
+  "dependencies": {
+    "@prisma/client": "^5.21.0",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-jwt": "^8.4.1",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "passport-local": "^1.0.0",
+    "prisma": "^5.20.0"
+  }
+}

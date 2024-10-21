@@ -69,7 +69,7 @@ Taskit/
 │   │   └── todo.js             # JavaScript logic for the todo app UI
 │   ├── index.html              # Landing page (welcome, login, sign-up buttons)
 │   └── todo.html               # Todo App UI (user dashboard)
-│                           # backend (server side logic )
+│                           # backend 
 ├── views/                      # EJS templates (server-side views)
 │   ├── loginForm.ejs           # Login form for Google or email
 │   ├── signupForm.ejs          # Signup form for Google or email
