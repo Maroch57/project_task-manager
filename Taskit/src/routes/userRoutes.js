@@ -7,7 +7,8 @@ const { PrismaClient } = require('@prisma/client');
 const router = express.Router();
 const prisma = new PrismaClient();
 
-const jwtAuth = require('../middleware/jwtAuth');
+//const jwtAuth = require('../middleware/jwtAuth');
+const { jwtAuth, logUserInfo } = require('../middleware/jwtAuth');
 const tokenBlacklist = new Set(); // In-memory jwt token blacklist for demo 
 
 // Middleware to validate request body
@@ -78,7 +79,7 @@ router.post('/login', validateSignup, async (req, res) => {
 });
 
 // Protected route (only accessible if authenticated)
-router.get('/protected', jwtAuth, (req, res) => {
+router.get('/protected', jwtAuth, logUserInfo, (req, res) => {
        res.status(200).json({ message: `Hello ${req.user.email}, this is a protected route.` });
    });
 
@@ -137,8 +138,9 @@ router.post('/signin', async (req, res) => {
            res.status(500).json({ message: "Internal server error" });
        }
    });
+
 // Get User profile route (protected)
-router.get('/profile', jwtAuth ,async (req, res) => {
+router.get('/profile', jwtAuth, logUserInfo, async (req, res) => {
     const userId = req.user.id; // Get User ID from request after validation
 
     try {
@@ -158,7 +160,8 @@ router.get('/profile', jwtAuth ,async (req, res) => {
         res.status(500).json({ message: 'Error retrieving User profile.', error: error.message });
     }
 });
-/*/ GOOGLE SIGNUP/LOGIN& LOGOUT Authentication Routes
+/*
+// GOOGLE SIGNUP/LOGIN& LOGOUT Authentication Routes
 // User Signup
 router.post('/signup', async (req, res) => {
        const { email, password } = req.body;
@@ -195,7 +198,6 @@ router.post('/signup', async (req, res) => {
      router.get('/google/callback', passport.authenticate('google', { session: false }), (req, res) => {
        const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
        res.redirect(`/dashboard?token=${token}`);
-     });
-*/
+     }); */
 // Export the router
 module.exports = router;
