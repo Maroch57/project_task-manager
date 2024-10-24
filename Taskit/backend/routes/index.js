@@ -14,6 +14,9 @@ router.post('/reset-password/:token', authController.resetPassword);
 // Profile route
 router.put('/profile', authenticateToken, profileController.updateProfile);
 
+// Logout Route
+router.post('/logout', authenticateToken, authController.logout);
+
 // Todo routes
 router.post('/todos', authenticateToken, todoController.createTodo); // Create task
 router.get('/todos', authenticateToken, todoController.getTodos); // Get all task for a specific user
