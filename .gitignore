@@ -1,0 +1,8 @@
+node_modules
+--verbos
+
+# Enviroment variables
+.env
+
+# frontends
+frontends
