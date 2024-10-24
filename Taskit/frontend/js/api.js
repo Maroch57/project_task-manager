@@ -204,7 +204,7 @@ function getCookie(name) {
        const parts = value.split(`; ${name}=`);
        if (parts.length === 2) return parts.pop().split(';').shift();
        return null;
-   }
+}
 
 // List of allowed public pages that don't require authentication
 const allowedPages = [
@@ -235,37 +235,98 @@ window.onload = validateAccess;
  * After VAlidation to the TO DO list
  */
 
-async function CreateToDOList(event) {
-       event.preventDefault();
-
+async function addTask() {
        const token = getCookie('token')
        const title = document.querySelector('input[name="title"]').value;
 
-       try {
-              const result = await createTodo(token, title);
-              if (result.error) {
-                     document.querySelector('.error').innerText = result.error;
-              } else {
+       if(!title) {
+              document.querySelector('.error').innerText = "Please provide a title";
+       } else {
 
-                     window.alert("Task Created Successfully")
+              try {
+                     const result = await createTodo(token, title);
+                     if (result.error) {
+                            document.querySelector('.error').innerText = result.error;
+                     } else {
+
+                            window.alert("Task Created Successfully");
+                            fetchTasks();
+                     }
+              } catch (error) {
+                     document.querySelector('.error').innerText = 'An error occurred during login.';
               }
-       } catch (error) {
-              document.querySelector('.error').innerText = 'An error occurred during login.';
        }
 
-
-
 }
+
+// Select the HTML elements where tasks will be rendered
+const listContainer = document.getElementById("list-container");
+
+// Function to fetch tasks from the backend
+async function fetchTasks() {
+       const token = getCookie('token')
+       try {
+              const response = await getTodos(token);
+              console.log(response);
+              renderTasks(response); // Display tasks in the DOM
+       } catch (error) {
+              console.error('Error fetching tasks:', error);
+       }
+}
+
+function renderTasks(tasks) {
+       listContainer.innerHTML = ''; // Clear previous tasks
+
+       if (tasks.length === 0) {
+              const li = document.createElement('li');
+              li.textContent = "No tasks";
+              listContainer.appendChild(li);
+              return;
+       }
+
+       tasks.forEach(task => {
+              const li = document.createElement('li'); // Create a new <li> for each task
+              li.textContent = task.title;
+
+              if (task.status === 'completed') {
+                     li.classList.add('checked'); // Add 'checked' class if task is completed
+              }
+
+              const span = document.createElement('span');
+              span.innerHTML = "\u00d7";
+              span.onclick = () => deleteTask(task.id);
+              li.appendChild(span);
+
+              listContainer.appendChild(li); // Add the <li> to the list container
+       });
+}
+
+// Function to delete a task by its ID
+async function deleteTask(id) {
+       const token = getCookie('token')
+       try {
+              const response = await deleteTodo(token, id);;
+              if (!response.ok) {
+                     throw new Error('Failed to delete task');
+              }
+              window.alert('Task deleted successfully')
+              fetchTasks();
+       } catch (error) {
+              console.error('Error deleting task:', error);
+       }
+}
+
+// Call the fetchTasks function to display tasks when the page loads
+fetchTasks();
 
 function logout() {
        localStorage.removeItem('token'); // Clear token from localStorage
        document.cookie = 'token=; Max-Age=0; path=/'; // Clear token from cookies
        window.location.href = 'loginForm.html'; // Redirect to login
-   }
+}
 
 document.addEventListener('DOMContentLoaded', () => {
        document.getElementById('loginForm').addEventListener('submit', handleLogin);
        document.getElementById('signUpForm').addEventListener('submit', handleSignUp);
        document.getElementById('logout').addEventListener('submit', logout);
-       document.getElementById('CreateTODoLisForm').addEventListener('submit', CreateToDOList);
 });
