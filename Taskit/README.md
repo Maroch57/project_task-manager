@@ -1,117 +1,208 @@
-# Webstack - Portfolio Project
+Authentication System with Secure Access and Todo Page
+This project implements a secure authentication system using JavaScript, ensuring token-based access using localStorage and cookies. Users are redirected to todo.html after a successful signup or login, and only authenticated users can access the todo page. Unauthorized users attempting access will be redirected to the login page.
 
-This is a capstone project that is collaborated by three members namely:
-1. Jahath Mwarori - (MySQL) database setup, schema design, ORM integration, DB optimization  &  DB maintenance
-2. Edwin Waweru - (node.js) server-side logic & controllers design, API Design & integration, API Routing.
-3. Edem Dufe - (HTML, CSS, JS) User Interface Design, UI styling, API calls(ajax/fetch), Form Handling, Dynamic Handling
+Technologies Used
+Frontend:
+HTML5 & CSS3 – UI and styling
+JavaScript (ES6) – API interactions and dynamic behavior
+Backend:
+Node.js with Express.js – Server-side logic
+PostgreSQL – Database for user management
+JWT (jsonwebtoken) – Authentication tokens for secure access
+bcryptjs – Password hashing
+dotenv – Managing environment variables
+express-validator – Request validation
+Getting Started
+Prerequisites
+Ensure the following tools are installed on your machine:
 
-## Tasks
-### 0. The presentation
+Node.js
+PostgreSQL
+Postman (optional, for testing APIs)
+Installation
+Clone the repository:
+# bash
+git clone https://github.com/Maroch57/project_task-manager.git
+cd Taskit!
 
-You will present your project individually or as a team on a zoom call.
+Install dependencies:
+# bash
+npm install
 
-Your presentation, inclusive of the demo, should not exceed 16 minutes. You are expected to provide the following:
+Set up the environment:
+Create a .env file in the root directory with the following content:
+# bash
+PORT=3000
+DATABASE_URL=postgres://<username>:<password>@localhost:5432/tododb
+JWT_SECRET=your_jwt_secret
 
-A public GitHub repository for your project.
-A Google Slides presentation including:
-A brief description of the project and your team.
-A breakdown of the architecture and the technologies or third-party services used.
-A report of your developments, highlighting your successes, challenges, areas for improvement, lessons learned, and next steps for your project.
-A conclusion summarizing your experience.
-Remember, the presentation is a vital part of your project completion, so be sure to include it in your planning to avoid any delays in submission.
+Create the PostgreSQL database:
+# bash
+psql -U <username>
+CREATE DATABASE tododb;
 
+Run database migrations (if using a migration tool like Sequelize or Knex):
+# bash
+npx sequelize-cli db:migrate
 
-### 1. Video Demo of your project
-
-Alongside your project presentation, we require a short video demo, no longer than 3 minutes, that showcases the essential features of your project, illustrating how they all work together. This could take the form of a user walkthrough.
-
-We’ve created a tutorial video to inspire you with our expectations. Think of it as an inspirational tool, not a strict template, designed to help you effectively showcase your brilliant work. Your creativity and individual touch will make your demo even more engaging.
-
-
-A few points to consider while preparing your video:
-
-Maximum Video Duration: The video should not exceed 3 minutes, ensuring it is concise and engaging.
-
-Background Music: If you include background music, ensure it’s copyright-free to avoid potential legal issues.
-
-Voice-Overs: Feel free to use your voice to guide us through your project. Ensure your voice is clear, audible, and not overshadowed by the background music.
-
-Recommended Tools: We suggest using
-
-Recording: Zoom(record + screenshare), Loom, Camtasia, etc
-Editing tools such as: Filmora Wondershare, Camtasia for your video creation.
-How to share: YouTube (or, if blocked in your country, use a similar site), or a cloud storage service (G-drive, One-drive, etc). Submit the URL of your video. Make sure your video is accessible to the public - On YouTube, it’s fine to flag it as “unlisted,” but don’t flag it as “private”
-Please note that your project will not be considered complete without this video submission. It forms an integral part of your final project assessment.
-
-So, let’s see your creativity in action.
-
-We are eagerly awaiting your presentations and demo videos.
-
-Happy building,
+Start the server:
+# bash
+npm start
 
 
-### 3. Good use of Version Control
-
-You must demonstrate a good understanding of version control through effective use in your portfolio project. This include:
-
-Committing as often as possible
-using descriptive and professional commit messages
-collaboration through the use of branches and pull requests
-
-# project mvc structure
-Taskit/
+Project Structure
+project-folder
 │
-├── public/                     # Frontend (static files)
-│   ├── css/
-│   │   └── styles.css          # Global CSS styling for frontend
-│   ├── js/
-│   │   ├── main.js             # Logic for landing page interactions
-│   │   └── todo.js             # JavaScript logic for the todo app UI
-│   ├── index.html              # Landing page (welcome, login, sign-up buttons)
-│   └── todo.html               # Todo App UI (user dashboard)
-│                           # backend 
-├── views/                      # EJS templates (server-side views)
-│   ├── loginForm.ejs           # Login form for Google or email
-│   ├── signupForm.ejs          # Signup form for Google or email
-│   ├── error.ejs               # Error view for server-side issues
-│   └── profile.ejs             # User profile page (optional)
+├── backend
+│   ├── controllers
+│   │   └── authController.js
+│   │   └── todoController.js
+│   ├── middleware
+│   │   └── auth.js
+│   ├── routes
+│       └── authRoutes.js
+│       └── todoRoutes.js
+│   └── models
+│       └── user.js
 │
-├── src/                        # Backend logic
-│   ├── controllers/            # Controllers handle logic for each route
-│   │   ├── authController.js   # Logic for login, signup, and logout
-│   │   ├── userController.js    # Logic for user profile and management
-│   │   └── taskController.js    # Logic for CRUD operations on tasks
-│   │
-│   ├── routes/                 # Routes for backend APIs
-│   │   ├── authRoutes.js       # Auth routes for login, signup, logout
-│   │   ├── userRoutes.js       # User management routes
-│   │   └── taskRoutes.js       # Routes for managing tasks
-│   │
-│   ├── middleware/             # Middleware functions
-│   │   ├── passportConfig.js   # Passport strategies (Google, Local, MagicLink)
-│   │   └── jwtAuth.js          # JWT authentication middleware
-│   │
-│   ├── models/                 # Prisma ORM and database schema
-│   │   └── prisma.schema       # MySQL schema (Prisma)
-│   │
-│   ├── prisma/                 # Prisma migrations
-│   │   └── migrations/         # Database migrations folder
-│   │
-│   ├── tests/                  # Backend unit tests
-│   │   ├── auth.test.js        # Tests for authentication
-│   │   ├── user.test.js        # Tests for user management
-│   │   └── task.test.js        # Tests for task management
-│   │
-│   ├── utils/                  # Helper functions
-│   │   ├── sendEmail.js        # Sends MagicLink emails
-│   │   └── logger.js           # Logger utility (optional)
-│   │
-│   ├── app.js                  # Express app initialization
-│   └── server.js               # Server entry point
+├── frontend
+│   ├── loginForm.html
+│   ├── signupForm.html
+│   ├── todo.html
+│   └── js
+│       └── api.js
 │
-├── .env                        # Environment variables (JWT secret, DB credentials)
-├── package.json                # Project dependencies
-├── package-lock.json           # Lock file for dependencies
-├── README.md                   # Documentation
-└── api-docs/                   # API documentation (Swagger)
-    └── taskit-api.yaml         # OpenAPI (Swagger) file
+└── .env
+└── server.js
+
+
+API Routes
+
+Authentication Routes (/auth)
+POST /signup: Register a new user
+POST /login: Authenticate and log in the user
+GET /logout: Log out the user by clearing tokens
+
+Todo Routes (/todos)
+GET /todos: Retrieve the user's tasks
+POST /todos: Add a new task
+DELETE /todos/
+: Delete a task
+
+
+Frontend Code Overview
+
+Signup Form (signupForm.html)
+# html
+<form id="signupForm">
+  <h2>Sign Up</h2>
+  <input type="text" name="username" placeholder="Username" required />
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="password" name="password" placeholder="Password" required />
+  <input type="password" name="confirmPassword" placeholder="Confirm Password" required />
+  <button type="submit">Sign Up</button>
+  <p>Already have an account? <a href="loginForm.html">Login</a></p>
+</form>
+
+<script src="./js/api.js"></script>
+
+
+Login Form (loginForm.html)
+# html
+<form id="loginForm">
+  <h2>Login</h2>
+  <input type="email" name="email" placeholder="Email" required />
+  <input type="password" name="password" placeholder="Password" required />
+  <button type="submit">Login</button>
+  <p>Don't have an account? <a href="signupForm.html">Sign Up</a></p>
+</form>
+
+<script src="./js/api.js"></script>
+
+
+JavaScript: Handling API Requests (api.js)
+# javascript
+const apiUrl = 'http://localhost:3000';
+
+async function signup(e) {
+  e.preventDefault();
+  const formData = new FormData(document.getElementById('signupForm'));
+  const data = Object.fromEntries(formData);
+
+  try {
+    const response = await fetch(`${apiUrl}/auth/signup`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    if (response.ok) {
+      localStorage.setItem('token', result.token);
+      window.location.href = 'todo.html';
+    } else {
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+async function login(e) {
+  e.preventDefault();
+  const formData = new FormData(document.getElementById('loginForm'));
+  const data = Object.fromEntries(formData);
+
+  try {
+    const response = await fetch(`${apiUrl}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    const result = await response.json();
+    if (response.ok) {
+      localStorage.setItem('token', result.token);
+      window.location.href = 'todo.html';
+    } else {
+      alert(result.message);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+document.getElementById('signupForm')?.addEventListener('submit', signup);
+document.getElementById('loginForm')?.addEventListener('submit', login);
+
+
+Backend Authentication Controller (authController.js)
+# javascript
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+
+exports.signup = async (req, res) => {
+  const { username, email, password } = req.body;
+  const hashedPassword = await bcrypt.hash(password, 10);
+  const user = await User.create({ username, email, password: hashedPassword });
+
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+  res.json({ token });
+};
+
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ where: { email } });
+  if (!user || !(await bcrypt.compare(password, user.password))) {
+    return res.status(401).json({ message: 'Invalid credentials' });
+  }
+  const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET);
+  res.json({ token });
+};
+
+
+Todo Controller (todoController.js)
+# javascript
+exports.getTodos = async (req, res) => {
+  const todos = await Todo.findAll({ where: { userId: req.user.id } });
+  res.json(todos);
+};
