@@ -78,6 +78,109 @@ project-folder
 
 API Routes
 
+[POST] /signup
+Registers a new user.
+
+Request
+
+Method: POST
+Endpoint: /signup
+Compulsory request parameters: None (Expected fields: email, password, etc.)
+Browser-based endpoint: False
+[POST] /login
+Authenticates a user and provides a token.
+
+Request
+
+Method: POST
+Endpoint: /login
+Compulsory request parameters: None (Expected fields: email, password)
+Browser-based endpoint: False
+[POST] /forgot-password
+Sends password reset instructions to the user's email.
+
+Request
+
+Method: POST
+Endpoint: /forgot-password
+Compulsory request parameters: None (Expected field: email)
+Browser-based endpoint: False
+[POST] /reset-password/
+
+Resets the password using a token.
+
+Request
+
+Method: POST
+Endpoint: /reset-password/:token
+Compulsory request parameters: Token (URL parameter)
+Browser-based endpoint: False
+[PUT] /profile
+Updates user profile details.
+
+Request
+
+Method: PUT
+Endpoint: /profile
+Compulsory request parameters: None (Expected fields: user profile data)
+Browser-based endpoint: False
+[POST] /logout
+Logs the user out by invalidating the session token.
+
+Request
+
+Method: POST
+Endpoint: /logout
+Compulsory request parameters: None
+Browser-based endpoint: False
+[POST] /todos
+Creates a new to-do item for the user.
+
+Request
+
+Method: POST
+Endpoint: /todos
+Compulsory request parameters: None (Expected fields: todo details)
+Browser-based endpoint: False
+[GET] /todos
+Retrieves all to-do items for the authenticated user.
+
+Request
+
+Method: GET
+Endpoint: /todos
+Compulsory request parameters: None
+Browser-based endpoint: False
+[PUT] /todos/
+
+Updates a specific to-do item.
+
+Request
+
+Method: PUT
+Endpoint: /todos/:id
+Compulsory request parameters: ID (URL parameter)
+Browser-based endpoint: False
+[DELETE] /todos/
+
+Deletes a specific to-do item.
+
+Request
+
+Method: DELETE
+Endpoint: /todos/:id
+Compulsory request parameters: ID (URL parameter)
+Browser-based endpoint: False
+[GET] /status
+Returns the status of the API.
+
+Request
+
+Method: GET
+Endpoint: /status
+Compulsory request parameters: None
+Browser-based endpoint: True
+
 Authentication Routes (/auth)
 POST /signup: Register a new user
 POST /login: Authenticate and log in the user
@@ -88,7 +191,6 @@ GET /todos: Retrieve the user's tasks
 POST /todos: Add a new task
 DELETE /todos/
 : Delete a task
-
 
 Frontend Code Overview
 
