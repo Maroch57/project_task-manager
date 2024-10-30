@@ -206,3 +206,9 @@ exports.getTodos = async (req, res) => {
   const todos = await Todo.findAll({ where: { userId: req.user.id } });
   res.json(todos);
 };
+
+
+List of Contributors
+Edwin Waweru - Backend
+Jahath Mwarori - Backend
+David Edem - Frontend
